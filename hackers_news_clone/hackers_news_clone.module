@@ -1,0 +1,43 @@
+<?php
+
+function apicall($url){
+  $curl = curl_init();
+  curl_setopt_array($curl, array(
+    CURLOPT_URL => $url,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'GET',
+    CURLOPT_SSL_VERIFYPEER => 0,
+  ));
+  $response = curl_exec($curl);
+  curl_close($curl);
+
+  return ($response);
+}
+
+function stories($story_ids){
+  $comment_per_id = " ";
+  foreach ($story_ids as $key) {
+    $story_response = apicall("https://hacker-news.firebaseio.com/v0/item/".$key.".json");
+    $story_per_id = json_decode($story_response);//decode story json responce
+    $stroy_title = $story_per_id->title;//story title
+    $story_comment_id = $story_per_id->kids[0];//get only first comment
+    $comment_response = apicall("https://hacker-news.firebaseio.com/v0/item/".$story_comment_id.".json");//call to get commet
+    $comments = json_decode($comment_response);//decode story comment json responce
+    $comment_per_id = $comments->text;//fetched comments
+    if(empty($comment_per_id)){
+      $comment_per_id = "None";
+    }
+    $table_structure['rows'][] = [
+      'data' => [
+        'story' => $stroy_title,
+        'comment' => $comment_per_id,
+      ],
+    ];
+  }
+  return $table_structure['rows'];
+}

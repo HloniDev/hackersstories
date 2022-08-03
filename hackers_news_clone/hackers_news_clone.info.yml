@@ -1,0 +1,5 @@
+name: Hacker News clone
+description: 'Fetch the news items periodically for top stories, new stories and best stories.'
+package: Drupal Custom
+core_version_requirement: ^8.8 || ^9
+type: module

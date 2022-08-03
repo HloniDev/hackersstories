@@ -1,0 +1,7 @@
+hackers_news_clone.form_view:
+  path: "/hackers-news-clone"
+  defaults:
+    _form: '\Drupal\hackers_news_clone\Form\HackersNews'
+    _title: "Hackers News Clone"
+  requirements:
+    _permission: 'access content'
