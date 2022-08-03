@@ -1,0 +1,31 @@
+<?php
+/**
+ * Implements hook_schema().
+ */
+function hackers_news_clone_schema() {
+    $schema['hackers_news_clone_table'] = array(
+      'description' => 'A table to store stories and comments',
+      'fields' => array(
+        'id' => array(
+        'description' => 'Holds the id value',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        ),
+        'stories' => array(
+          'description' => 'Holds the story title',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => TRUE,
+        ),
+        'comments' => array(
+          'description' => 'Holds the comments',
+          'type' => 'varchar',
+          'length' => '255',
+          'not null' => TRUE,
+        ),
+      ),
+      'primary key' => array('id'),
+    );
+    return $schema;
+}
