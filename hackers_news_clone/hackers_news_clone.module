@@ -29,8 +29,9 @@ function stories($story_ids){
     $comment_response = apicall("https://hacker-news.firebaseio.com/v0/item/".$story_comment_id.".json");//call to get commet
     $comments = json_decode($comment_response);//decode story comment json responce
     $comment_per_id = $comments->text;//fetched comments
-    if(empty($comment_per_id)){
+    if(empty($comment_per_id) || empty($story_comment_id)){
       $comment_per_id = "None";
+      $story_comment_id = "None";
     }
     $table_structure['rows'][] = [
       'data' => [
@@ -38,6 +39,16 @@ function stories($story_ids){
         'comment' => $comment_per_id,
       ],
     ];
+    \Drupal::database()->insert('hackers_news_clone_table')
+      ->fields([
+        'stories',
+        'comments',
+      ])
+      ->values(array(
+        $key,
+        $story_comment_id,
+      ))
+      ->execute();
   }
   return $table_structure['rows'];
 }
